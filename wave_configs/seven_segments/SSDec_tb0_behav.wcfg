@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="SSDec_tb0_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="SSDec_tb0" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="375.383 ns"></ZoomEndTime>
+      <Cursor1Time time="15.860 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="120"></NameColumnWidth>
+      <ValueColumnWidth column_width="58"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="15" />
+   <wvobject fp_name="/SSDec_tb0/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/SSDec_tb0/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/SSDec_tb0/dut/div_clk" type="logic">
+      <obj_property name="ElementShortName">div_clk</obj_property>
+      <obj_property name="ObjectShortName">div_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/SSDec_tb0/val1" type="array">
+      <obj_property name="ElementShortName">val1[3:0]</obj_property>
+      <obj_property name="ObjectShortName">val1[3:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/SSDec_tb0/val2" type="array">
+      <obj_property name="ElementShortName">val2[3:0]</obj_property>
+      <obj_property name="ObjectShortName">val2[3:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/SSDec_tb0/val3" type="array">
+      <obj_property name="ElementShortName">val3[3:0]</obj_property>
+      <obj_property name="ObjectShortName">val3[3:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/SSDec_tb0/val4" type="array">
+      <obj_property name="ElementShortName">val4[3:0]</obj_property>
+      <obj_property name="ObjectShortName">val4[3:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/SSDec_tb0/dot1" type="logic">
+      <obj_property name="ElementShortName">dot1</obj_property>
+      <obj_property name="ObjectShortName">dot1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/SSDec_tb0/dot2" type="logic">
+      <obj_property name="ElementShortName">dot2</obj_property>
+      <obj_property name="ObjectShortName">dot2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/SSDec_tb0/dot3" type="logic">
+      <obj_property name="ElementShortName">dot3</obj_property>
+      <obj_property name="ObjectShortName">dot3</obj_property>
+   </wvobject>
+   <wvobject fp_name="/SSDec_tb0/dot4" type="logic">
+      <obj_property name="ElementShortName">dot4</obj_property>
+      <obj_property name="ObjectShortName">dot4</obj_property>
+   </wvobject>
+   <wvobject fp_name="/SSDec_tb0/dut/val" type="array">
+      <obj_property name="ElementShortName">val[3:0]</obj_property>
+      <obj_property name="ObjectShortName">val[3:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/SSDec_tb0/digit" type="array">
+      <obj_property name="ElementShortName">digit[3:0]</obj_property>
+      <obj_property name="ObjectShortName">digit[3:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/SSDec_tb0/display" type="array">
+      <obj_property name="ElementShortName">display[6:0]</obj_property>
+      <obj_property name="ObjectShortName">display[6:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/SSDec_tb0/dp" type="logic">
+      <obj_property name="ElementShortName">dp</obj_property>
+      <obj_property name="ObjectShortName">dp</obj_property>
+   </wvobject>
+</wave_config>

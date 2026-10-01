@@ -1,0 +1,42 @@
+# vscode configuration
+.vscode/
+
+# -- Vivado xvlog stuff --
+# xvlog
+xvlog.*
+
+# Vivado
+*.cache/
+*.hw/
+*.ip_user_files/
+*.sim/
+*.srcs/
+*.xpr
+
+# -- iverilog stuff --
+# .vvp files
+vvps/
+*.vvp
+
+# waveform .vcd files
+waves/
+*.vcd
+
+# -- Course stuff --
+# template code zip
+template_zips/
+*.zip
+
+# pratice spec pdf
+specs/
+*.pdf
+
+# lab0
+lab0_src/
+
+# bit stream
+bits/
+*.bit
+
+# test
+adv2/mask_adder.sv
