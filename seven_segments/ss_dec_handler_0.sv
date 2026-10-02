@@ -1,7 +1,7 @@
 `timescale 1ns/1ps
 
 module SSDecHandler0 #(
-    parameter divide = 16
+    parameter n = 16
 ) (
     input logic clk,
     input logic rst,
@@ -20,7 +20,7 @@ module SSDecHandler0 #(
 
     logic div_clk;
 
-    clock_divider #(.n(divide)) clk_divide(
+    clock_divider #(.n(n)) clk_divide(
         .clk(clk), .rst(rst), .enable(1'b1), .clk_div(div_clk)
     );
 
