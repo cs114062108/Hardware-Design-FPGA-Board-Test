@@ -29,7 +29,7 @@ module SevenSegDec (
             4'hb: display = 7'b110_0000;
             4'hc: display = 7'b011_0001;
             4'hd: display = 7'b100_0010;
-            4'he: display = 7'b001_0000;
+            4'he: display = 7'b011_0000;
             4'hf: display = 7'b011_1000;
 
             default: display = 7'b111_1110;

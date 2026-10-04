@@ -24,6 +24,10 @@ set_property IOSTANDARD LVCMOS33 [get_ports {switch_inputtype[*]}]
 set_property IOSTANDARD LVCMOS33 [get_ports valid]
 set_property IOSTANDARD LVCMOS33 [get_ports rst]
 
+## SW11: preview
+set_property PACKAGE_PIN R3 [get_ports preview]
+set_property IOSTANDARD LVCMOS33 [get_ports preview]
+
 ## --- Seven Segments ---
 ## Digits: digit
 set_property PACKAGE_PIN W4 [get_ports {digit[3]}]
