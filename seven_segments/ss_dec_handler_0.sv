@@ -13,15 +13,23 @@ module SSDecHandler0 #(
     input logic dot2,
     input logic dot3,
     input logic dot4,
+    input logic show1,
+    input logic show2,
+    input logic show3,
+    input logic show4,
     output logic [3:0] digit,
     output logic [6:0] display,
     output logic dp
 );
 
+    logic rst_pulse;
+
+    one_pulse pulse(.clk(clk), .pb_in(rst), .pb_out(rst_pulse));
+    
     logic div_clk;
 
     clock_divider #(.n(n)) clk_divide(
-        .clk(clk), .rst(rst), .enable(1'b1), .clk_div(div_clk)
+        .clk(clk), .rst(rst_pulse), .enable(1'b1), .clk_div(div_clk)
     );
 
     logic [7:0] dis_1;
@@ -34,11 +42,10 @@ module SSDecHandler0 #(
     logic dp_3;
     logic dp_4;
 
-    SevenSegDec SS1(.value(val1), .dot(dot1), .display(dis_1), .dp(dp_1));
-    SevenSegDec SS2(.value(val2), .dot(dot2), .display(dis_2), .dp(dp_2));
-    SevenSegDec SS3(.value(val3), .dot(dot3), .display(dis_3), .dp(dp_3));
-    SevenSegDec SS4(.value(val4), .dot(dot4), .display(dis_4), .dp(dp_4));
-    
+    SevenSegDec SS1(.value(val1), .dot(dot1), .show(show1), .display(dis_1), .dp(dp_1));
+    SevenSegDec SS2(.value(val2), .dot(dot2), .show(show2), .display(dis_2), .dp(dp_2));
+    SevenSegDec SS3(.value(val3), .dot(dot3), .show(show3), .display(dis_3), .dp(dp_3));
+    SevenSegDec SS4(.value(val4), .dot(dot4), .show(show4), .display(dis_4), .dp(dp_4));
     
     localparam FISRT  = 4'b0111;
     localparam SECOND = 4'b1011;

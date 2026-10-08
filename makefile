@@ -15,7 +15,7 @@ wavedir = waves
 # Verilog source files
 ss_dir = seven_segments
 
-mod_ss_d0 = ss_dec.sv ss_dec_handler_0.sv clock_divider.sv
+mod_ss_d0 = ss_dec.sv ss_dec_handler_0.sv clock_divider.sv one_pulse.sv
 src_ss_d0 = $(mod_ss_d0) ss_dec_test0.sv
 v_ss_d0 = $(patsubst %, $(ss_dir)/%, $(src_ss_d0))
 

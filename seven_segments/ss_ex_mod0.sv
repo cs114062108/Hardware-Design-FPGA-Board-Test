@@ -39,6 +39,15 @@ module SSExMod0 (
 
     logic [3:0] dis_val1, dis_val2, dis_val3, dis_val4;
     logic       dis_dot1, dis_dot2, dis_dot3, dis_dot4;
+    logic       show1, show2, show3, show4;
+
+    SSDecHandler0 ss_handler (
+        .clk(clk), .rst(rst),
+        .val1(dis_val1), .val2(dis_val2), .val3(dis_val3), .val4(dis_val4),
+        .dot1(dis_dot1), .dot2(dis_dot2), .dot3(dis_dot3), .dot4(dis_dot4),
+        .show1(show1), .show2(show2), .show3(show3), .show4(show4),
+        .digit(digit), .display(display), .dp(dp)
+    );
 
     logic [3:0] in_val1, in_val2;
     assign in_val1 = switch_input[7:4];
@@ -63,6 +72,11 @@ module SSExMod0 (
                 dis_dot2 = 1'b1;
                 dis_dot3 = 1'b0;
                 dis_dot4 = 1'b0;
+
+                show1 = 1'b1;
+                show2 = 1'b1;
+                show3 = 1'b1;
+                show4 = 1'b1;
             end
 
             VAL34: begin
@@ -80,6 +94,11 @@ module SSExMod0 (
                 dis_dot2 = 1'b0;
                 dis_dot3 = 1'b1;
                 dis_dot4 = 1'b1;
+
+                show1 = 1'b1;
+                show2 = 1'b1;
+                show3 = 1'b1;
+                show4 = 1'b1;
             end
 
             TGT: begin
@@ -97,6 +116,11 @@ module SSExMod0 (
                 dis_dot2 = 1'b0;
                 dis_dot3 = 1'b1;
                 dis_dot4 = 1'b1;
+
+                show1 = 1'b0;
+                show2 = 1'b0;
+                show3 = 1'b1;
+                show4 = 1'b1;
             end
 
             MASK: begin
@@ -109,6 +133,11 @@ module SSExMod0 (
                 dis_dot2 = mask[2];
                 dis_dot3 = mask[1];
                 dis_dot4 = mask[0];
+
+                show1 = 1'b1;
+                show2 = 1'b1;
+                show3 = 1'b1;
+                show4 = 1'b1;
             end
 
             default: begin
@@ -121,16 +150,14 @@ module SSExMod0 (
                 dis_dot2 = 1'b0;
                 dis_dot3 = 1'b0;
                 dis_dot4 = 1'b0;
+
+                show1 = 1'b1;
+                show2 = 1'b1;
+                show3 = 1'b1;
+                show4 = 1'b1;
             end
 
         endcase
     end
-
-    SSDecHandler0 ss_handler (
-        .clk(clk), .rst(rst),
-        .val1(dis_val1), .val2(dis_val2), .val3(dis_val3), .val4(dis_val4),
-        .dot1(dis_dot1), .dot2(dis_dot2), .dot3(dis_dot3), .dot4(dis_dot4),
-        .digit(digit), .display(display), .dp(dp)
-    );
 
 endmodule
