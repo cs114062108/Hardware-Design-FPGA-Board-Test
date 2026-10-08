@@ -19,7 +19,7 @@ mod_ss_d0 = ss_dec.sv ss_dec_handler_0.sv clock_divider.sv one_pulse.sv
 src_ss_d0 = $(mod_ss_d0) ss_dec_test0.sv
 v_ss_d0 = $(patsubst %, $(ss_dir)/%, $(src_ss_d0))
 
-mod_ss_ex0 = ss_ex_mod0.sv switch_reader.sv $(mod_ss_d0)
+mod_ss_ex0 = ss_ex_mod0.sv switch_reader.sv timer.sv $(mod_ss_d0)
 src_ss_ex0 = $(mod_ss_ex0)
 v_ss_ex0 = $(patsubst %, $(ss_dir)/%, $(src_ss_ex0))
 

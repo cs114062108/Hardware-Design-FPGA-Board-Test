@@ -29,6 +29,37 @@ module SSExMod0 (
         .v_1(val_1), .v_2(val_2), .v_3(val_3), .v_4(val_4), .tgt(target), .msk(mask)
     );
 
+    // ------------------------------------
+    // Blinker
+    // ------------------------------------
+    logic blink_timer;
+    logic blink_rst;
+    assign blink_rst = rst || ~preview;
+    timer #(.COUNT(50_000_000)) blink_time(.clk(clk), .rst(blink_rst), .enable(preview), .tick(blink_timer));
+
+    logic blinker;
+    logic next_blinker;
+
+    always_comb begin
+        if (rst) begin
+            next_blinker = 1'b1;
+        end else if (preview) begin
+            next_blinker = ~blinker;
+        end else begin
+            next_blinker = 1'b1;
+        end
+    end
+
+    always_ff @(posedge clk or posedge rst) begin
+        if (rst) begin
+            blinker <= 1'b1;
+        end else if (blink_timer) begin
+            blinker <= next_blinker;
+        end else if (!preview) begin
+            blinker <= 1'b1;
+        end
+    end
+
     // ------------------------------------------------------------
     // Display Values on Seven Segments: val_1 val_2 val_3 val_4
     // ------------------------------------------------------------
@@ -73,8 +104,8 @@ module SSExMod0 (
                 dis_dot3 = 1'b0;
                 dis_dot4 = 1'b0;
 
-                show1 = 1'b1;
-                show2 = 1'b1;
+                show1 = blinker;
+                show2 = blinker;
                 show3 = 1'b1;
                 show4 = 1'b1;
             end
@@ -97,8 +128,8 @@ module SSExMod0 (
 
                 show1 = 1'b1;
                 show2 = 1'b1;
-                show3 = 1'b1;
-                show4 = 1'b1;
+                show3 = blinker;
+                show4 = blinker;
             end
 
             TGT: begin
@@ -119,8 +150,8 @@ module SSExMod0 (
 
                 show1 = 1'b0;
                 show2 = 1'b0;
-                show3 = 1'b1;
-                show4 = 1'b1;
+                show3 = blinker;
+                show4 = blinker;
             end
 
             MASK: begin
