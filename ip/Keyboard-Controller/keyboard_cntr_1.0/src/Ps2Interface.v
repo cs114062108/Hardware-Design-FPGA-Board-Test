@@ -193,7 +193,7 @@ module Ps2Interface#(
   parameter DEBOUNCE_DELAY = 15;
   parameter BITS_NUM = 11;
   
-  parameter [0:0] parity_table [0:255] = {    //(odd) parity bit table, used instead of logic because this way speed is far greater
+  parameter [0:255] parity_table = {    //(odd) parity bit table, used instead of logic because this way speed is far greater
     1'b1,1'b0,1'b0,1'b1,1'b0,1'b1,1'b1,1'b0,
     1'b0,1'b1,1'b1,1'b0,1'b1,1'b0,1'b0,1'b1,
     1'b0,1'b1,1'b1,1'b0,1'b1,1'b0,1'b0,1'b1,
