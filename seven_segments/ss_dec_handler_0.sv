@@ -23,11 +23,9 @@ module SSDecHandler0 #(
 );
 
     logic rst_pulse;
-
     one_pulse pulse(.clk(clk), .pb_in(rst), .pb_out(rst_pulse));
     
     logic div_clk;
-
     clock_divider #(.n(n)) clk_divide(
         .clk(clk), .rst(rst_pulse), .enable(1'b1), .clk_div(div_clk)
     );

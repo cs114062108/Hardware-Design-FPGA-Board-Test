@@ -41,6 +41,6 @@ module SevenSegDec (
         end
     end
 
-    assign dp = show ? ~dot : 1'b1;
+    assign dp = ~dot;
 
 endmodule
