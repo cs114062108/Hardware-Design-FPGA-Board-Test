@@ -17,4 +17,7 @@
 | [![ss_dec_0.svg](diagrams/seven_segments/ss_dec_0.svg)](seven_segments/ss_dec.sv) |
 | <div align="center">Time Multiplexing Handler</div> |
 | [![ss_dec_handler0_0.svg](diagrams/seven_segments/ss_dec_handler0_0.svg)](seven_segments/ss_dec_handler_0.sv) |
+| <div align="center">Time Multiplexing Handler (Subs Raw)</div> |
+| [![ss_dec_handler0_subs_raw_0.svg](diagrams/seven_segments/ss_dec_handler0_subs_raw_0.svg)](seven_segments/subs/ss_dec_handler_subs_0.sv) |
+| <div align="center">Time Multiplexing Handler FSM</div> |
 | [![ss_dec_handler0_digit_fsm_0_0.svg](diagrams/seven_segments/ss_dec_handler0_digit_fsm_0_0.svg)](seven_segments/ss_dec_handler_0.sv) |
