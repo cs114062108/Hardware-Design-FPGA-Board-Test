@@ -38,7 +38,7 @@ module SSDec_tb0;
     // ------------------------------------
     // Instantiate the design under test
     // ------------------------------------
-    SSDecHandler0 #(.divide(1)) dut(
+    SSDecHandler0 #(.n(1)) dut(
         .clk(clk), .rst(rst),
         .val1(val1), .val2(val2), .val3(val3), .val4(val4),
         .dot1(dot1), .dot2(dot2), .dot3(dot3), .dot4(dot4),
