@@ -5,7 +5,8 @@ module KeyboardDecoder(
 	inout logic PS2_DATA,
 	inout logic PS2_CLK,
 	input logic rst,
-	input logic clk
+	input logic clk,
+	output logic init_done
 );
     
 	typedef enum logic [1:0] {
@@ -37,6 +38,8 @@ module KeyboardDecoder(
     logic [511:0] key_decode;
     assign key_decode = 512'b1 << last_change;
     assign last_change = {key[9], key[7:0]};
+
+	assign init_done = (state != INIT);   // stays 1 once the keyboard has sent 0xAA
     
     KeyboardCtrl_0 inst (
 		.key_in(key_in),

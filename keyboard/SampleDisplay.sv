@@ -1,10 +1,11 @@
 module SampleDisplay(
 	output logic [6:0] display,
 	output logic [3:0] digit,
-	inout logic PS2_DATA,
-	inout logic PS2_CLK,
-	input logic rst,
-	input logic clk
+	inout  logic PS2_DATA,
+	inout  logic PS2_CLK,
+	input  logic rst,
+	input  logic clk,
+	output logic [15:0] LED
 );
 	
 	parameter [8:0] LEFT_SHIFT_CODES  = 9'h012; // 9'b0_0001_0010;
@@ -43,34 +44,53 @@ module SampleDisplay(
 	logic shift_down;
 	logic [511:0] key_down;
 	logic [8:0] last_change;
-	logic been_ready;
+	logic key_valid;
 	
 	assign shift_down = (key_down[LEFT_SHIFT_CODES] || key_down[RIGHT_SHIFT_CODES]);
+
+	logic init_done;
+
+	logic rst_op;
+
+	one_pulse r_op (
+		.pb_out(rst_op),
+		.pb_in(rst),
+		.clk(clk)
+	);
 	
 	SevenSegment seven_seg (
 		.display(display),
 		.digit(digit),
 		.nums(nums),
-		.rst(rst),
+		.rst(rst_op),
 		.clk(clk)
 	);
 		
 	KeyboardDecoder key_de (
 		.key_down(key_down),
 		.last_change(last_change),
-		.key_valid(been_ready),
+		.key_valid(key_valid),
 		.PS2_DATA(PS2_DATA),
 		.PS2_CLK(PS2_CLK),
-		.rst(rst),
-		.clk(clk)
+		.rst(rst_op),
+		.clk(clk),
+		.init_done(init_done)
 	);
 
-	always_ff @(posedge clk or posedge rst) begin
-		if (rst) begin
+	always_comb begin
+		if (rst_op) begin
+			LED = 16'hFFFF;
+		end else begin
+			LED = init_done ? 16'd0 : 16'hFFFF;
+		end
+	end
+	
+	always_ff @(posedge clk or posedge rst_op) begin
+		if (rst_op) begin
 			nums <= 16'b0;
 		end else begin
 			nums <= nums;
-			if (been_ready && key_down[last_change]) begin
+			if (key_valid && key_down[last_change]) begin
 				if (key_num != 4'b1111) begin
 					if (shift_down) begin
 						nums <= {key_num, nums[15:4]};
