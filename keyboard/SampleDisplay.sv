@@ -5,6 +5,8 @@ module SampleDisplay(
 	inout  logic PS2_CLK,
 	input  logic rst,
 	input  logic clk,
+	input  logic single_enable,
+	input  logic lock_enable,
 	output logic [15:0] LED
 );
 	
@@ -49,14 +51,6 @@ module SampleDisplay(
 	assign shift_down = (key_down[LEFT_SHIFT_CODES] || key_down[RIGHT_SHIFT_CODES]);
 
 	logic init_done;
-
-	logic rst_op;
-
-	one_pulse r_op (
-		.pb_out(rst_op),
-		.pb_in(rst),
-		.clk(clk)
-	);
 	
 	SevenSegment seven_seg (
 		.display(display),
@@ -77,21 +71,41 @@ module SampleDisplay(
 		.init_done(init_done)
 	);
 
+	// Single Register
+	logic new_press;
+
+	SingleRegister single_click(
+		.clk(clk), .rst(rst_op),
+		.enable(single_enable),
+		.key_down(key_down), .last_change(last_change),
+		.new_press(new_press)
+	);
+
+	logic accept;   // one-cycle pulse: a press that should be registered
+	assign accept = (key_num != 4'b1111) && new_press;
+
 	always_comb begin
-		if (rst_op) begin
+		if (rst) begin
 			LED = 16'hFFFF;
 		end else begin
-			LED = init_done ? 16'd0 : 16'hFFFF;
+			LED[15] = single_enable;
+			LED[14] = lock_enable;
+			
+			LED[13:8] = 6'd0;
+
+			LED[11] = new_press;
+
+			LED[7:0] = init_done ? 8'd0 : 8'hFF;
 		end
 	end
-	
-	always_ff @(posedge clk or posedge rst_op) begin
-		if (rst_op) begin
+
+	always_ff @(posedge clk or posedge rst) begin
+		if (rst) begin
 			nums <= 16'b0;
 		end else begin
 			nums <= nums;
 			if (key_valid && key_down[last_change]) begin
-				if (key_num != 4'b1111) begin
+				if (accept) begin
 					if (shift_down) begin
 						nums <= {key_num, nums[15:4]};
 					end else begin
