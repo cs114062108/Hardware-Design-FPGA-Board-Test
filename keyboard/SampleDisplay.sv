@@ -1,13 +1,14 @@
 module SampleDisplay(
-	output logic [6:0] display,
-	output logic [3:0] digit,
 	inout  logic PS2_DATA,
 	inout  logic PS2_CLK,
 	input  logic rst,
 	input  logic clk,
 	input  logic single_enable,
 	input  logic lock_enable,
-	output logic [15:0] LED
+	output logic [15:0] LED,
+	output logic [3:0] digit,
+	output logic [6:0] display,
+	output logic dp
 );
 	
 	parameter [8:0] LEFT_SHIFT_CODES  = 9'h012; // 9'b0_0001_0010;
@@ -42,6 +43,9 @@ module SampleDisplay(
 	logic [15:0] nums;
 	logic [3:0] key_num;
 	logic [9:0] last_key;
+
+	logic dot;
+	logic [3:0] dots;
 	
 	logic shift_down;
 	logic [511:0] key_down;
@@ -51,13 +55,22 @@ module SampleDisplay(
 	assign shift_down = (key_down[LEFT_SHIFT_CODES] || key_down[RIGHT_SHIFT_CODES]);
 
 	logic init_done;
+
+	logic rst_op;
+	one_pulse r_op (
+		.pb_out(rst_op),
+		.pb_in(rst),
+		.clk(clk)
+	);
 	
 	SevenSegment seven_seg (
-		.display(display),
-		.digit(digit),
-		.nums(nums),
 		.rst(rst_op),
-		.clk(clk)
+		.clk(clk),
+		.nums(nums),
+		.dots(dots),
+		.digit(digit),
+		.display(display),
+		.dp(dp)
 	);
 		
 	KeyboardDecoder key_de (
@@ -66,7 +79,7 @@ module SampleDisplay(
 		.key_valid(key_valid),
 		.PS2_DATA(PS2_DATA),
 		.PS2_CLK(PS2_CLK),
-		.rst(rst_op),
+		.rst(rst),
 		.clk(clk),
 		.init_done(init_done)
 	);
@@ -75,14 +88,31 @@ module SampleDisplay(
 	logic new_press;
 
 	SingleRegister single_click(
-		.clk(clk), .rst(rst_op),
+		.clk(clk), .rst(rst),
 		.enable(single_enable),
 		.key_down(key_down), .last_change(last_change),
 		.new_press(new_press)
 	);
 
-	logic accept;   // one-cycle pulse: a press that should be registered
-	assign accept = (key_num != 4'b1111) && new_press;
+	logic valid_keydown;
+	assign valid_keydown = key_valid && key_down[last_change];
+
+	logic accepted;   // one-cycle pulse: a press that should be registered
+	assign accepted = valid_keydown && (key_num != 4'b1111) && new_press;
+
+	// Key Lock
+	logic locked;
+
+	KeyLock key_lock(
+		.clk(clk), .rst(rst),
+		.enable(lock_enable),
+		.key_down(key_down), .last_change(last_change),
+		.accepted(accepted),
+		.locked(locked)
+	);
+
+	logic key_accepted;
+	assign key_accepted = accepted && !locked;
 
 	always_comb begin
 		if (rst) begin
@@ -93,7 +123,10 @@ module SampleDisplay(
 			
 			LED[13:8] = 6'd0;
 
-			LED[11] = new_press;
+			LED[12] = (nums[15:12] == nums[11:8]) && (nums[11:8] == nums[7:4]) && (nums[7:4] == nums[3:0]);
+
+			LED[10] = new_press;
+			LED[9] = locked;
 
 			LED[7:0] = init_done ? 8'd0 : 8'hFF;
 		end
@@ -102,15 +135,20 @@ module SampleDisplay(
 	always_ff @(posedge clk or posedge rst) begin
 		if (rst) begin
 			nums <= 16'b0;
+			dots <= 4'd0;
+			dot <= 1'b0;
 		end else begin
 			nums <= nums;
-			if (key_valid && key_down[last_change]) begin
-				if (accept) begin
-					if (shift_down) begin
-						nums <= {key_num, nums[15:4]};
-					end else begin
-						nums <= {nums[11:0], key_num};
-					end
+			dots <= dots;
+			dot <= dot;
+			if (key_accepted) begin
+				dot <= ~dot;
+				if (shift_down) begin
+					nums <= {key_num, nums[15:4]};
+					dots <= {dot, dots[3:1]};
+				end else begin
+					nums <= {nums[11:0], key_num};
+					dots <= {dots[2:0], dot};
 				end
 			end
 		end
