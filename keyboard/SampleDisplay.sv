@@ -123,7 +123,8 @@ module SampleDisplay(
 			
 			LED[13:8] = 6'd0;
 
-			LED[12] = (nums[15:12] == nums[11:8]) && (nums[11:8] == nums[7:4]) && (nums[7:4] == nums[3:0]);
+			LED[12] = last_change[8];
+			LED[11] = (nums[15:12] == nums[11:8]) && (nums[11:8] == nums[7:4]) && (nums[7:4] == nums[3:0]);
 
 			LED[10] = new_press;
 			LED[9] = locked;
