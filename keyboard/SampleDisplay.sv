@@ -55,6 +55,8 @@ module SampleDisplay(
 	assign shift_down = (key_down[LEFT_SHIFT_CODES] || key_down[RIGHT_SHIFT_CODES]);
 
 	logic init_done;
+	logic [1:0] decoder_state;
+	logic [7:0] key_in;
 
 	logic rst_op;
 	one_pulse r_op (
@@ -79,16 +81,18 @@ module SampleDisplay(
 		.key_valid(key_valid),
 		.PS2_DATA(PS2_DATA),
 		.PS2_CLK(PS2_CLK),
-		.rst(rst),
+		.rst(rst_op),
 		.clk(clk),
-		.init_done(init_done)
+		.init_done(init_done),
+		.decoder_state(decoder_state),
+		.o_key_in(key_in)
 	);
 
 	// Single Register
 	logic new_press;
 
 	SingleRegister single_click(
-		.clk(clk), .rst(rst),
+		.clk(clk), .rst(rst_op),
 		.enable(single_enable),
 		.key_down(key_down), .last_change(last_change),
 		.new_press(new_press)
@@ -104,7 +108,7 @@ module SampleDisplay(
 	logic locked;
 
 	KeyLock key_lock(
-		.clk(clk), .rst(rst),
+		.clk(clk), .rst(rst_op),
 		.enable(lock_enable),
 		.key_down(key_down), .last_change(last_change),
 		.accepted(accepted),
@@ -133,8 +137,8 @@ module SampleDisplay(
 		end
 	end
 
-	always_ff @(posedge clk or posedge rst) begin
-		if (rst) begin
+	always_ff @(posedge clk or posedge rst_op) begin
+		if (rst_op) begin
 			nums <= 16'b0;
 			dots <= 4'd0;
 			dot <= 1'b0;
@@ -155,6 +159,18 @@ module SampleDisplay(
 		end
 	end
 	
+	// ILA
+	logic reset;	// rst for debug probes
+	assign reset = rst_op;
+
+	ila_0 ILA(
+		.clk(clk),
+		.probe0(reset),
+		.probe1(key_in),
+		.probe2(decoder_state),
+		.probe3(init_done)
+	);
+
 	always_comb begin
 		// key_num = 4'b1111;
 		// for (int i = 0; i < 20; i++) begin
