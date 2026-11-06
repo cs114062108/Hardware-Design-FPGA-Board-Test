@@ -42,6 +42,7 @@ module SSDec_tb0;
         .clk(clk), .rst(rst),
         .val1(val1), .val2(val2), .val3(val3), .val4(val4),
         .dot1(dot1), .dot2(dot2), .dot3(dot3), .dot4(dot4),
+        .show1(1'b1), .show2(1'b1), .show3(1'b1), .show4(1'b1),
         .digit(digit), .display(display), .dp(dp)
     );
 
@@ -60,8 +61,9 @@ module SSDec_tb0;
 
     // Resets
     initial begin
-        rst = 1'b1;
-        #2ns rst = 1'b0; // At 2 ns
+        rst = 1'b0;
+        #5ns rst = 1'b1;
+        #20ns rst = 1'b0; // At 20 ns
     end
 
     // ---------------------
@@ -103,7 +105,7 @@ module SSDec_tb0;
     end
 
     initial begin
-        #15;
+        #35;
         for (test_index = 0; test_index < test_cnt; test_index++) begin
             val1 = val1s[test_index];
             val2 = val2s[test_index];
@@ -119,11 +121,9 @@ module SSDec_tb0;
 
             if (test_index < test_cnt-1) begin
                 @(negedge clk);
+                
                 for (int i = 0; i < wait_clk; i++) begin
-                    @(negedge clk);
-                    @(negedge clk);
-                    @(negedge clk);
-                    @(negedge clk);
+                    repeat (4) @(negedge clk);
                 end
             end
         end
@@ -132,10 +132,7 @@ module SSDec_tb0;
 
         @(negedge clk);
         for (int i = 0; i < wait_clk; i++) begin
-            @(posedge clk);
-            @(posedge clk);
-            @(posedge clk);
-            @(posedge clk);
+            repeat (4) @(posedge clk);
         end
         #20;
         $finish;

@@ -40,3 +40,9 @@ bits/
 
 # test
 adv2/mask_adder.sv
+
+# executers
+*.exe
+
+# Icon_
+Icon_
